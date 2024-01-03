@@ -1,0 +1,43 @@
+﻿<Window x:Class="Bookmarks.CreateFolder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bookmarks"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Create" Height="300" Width="600" FontSize="24" Foreground="#3fc88a" Background="#111111" WindowStyle="ToolWindow">
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Height="40" VerticalAlignment="Bottom" Margin="20,10,20,10" Text="Folder Name:" HorizontalAlignment="Right"/>
+            <TextBox Name="FolderTitleText" Grid.Column="1" Height="40" VerticalAlignment="Bottom" Margin="10,10,60,10" Foreground="#3fc88a" Background="#333333"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="110,15,40,0" Background="#333333" Cursor="" VerticalAlignment="Top" TextAlignment="Center" Padding="5,10,5,10">
+                <Hyperlink Name="Add" NavigateUri="EditBookmark.xaml" RequestNavigate="Add_RequestNavigate" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold">
+                    Add
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Column="1" Margin="40,15,110,0" Background="#333333" Cursor="" VerticalAlignment="Top" TextAlignment="Center" Padding="5,10,5,10">
+                <Hyperlink Name="Cancel" NavigateUri="EditBookmark.xaml" RequestNavigate="Cancel_RequestNavigate" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold">
+                    Cancel
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</Window>
