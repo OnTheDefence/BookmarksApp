@@ -63,6 +63,7 @@
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -70,26 +71,66 @@
                 <Grid Grid.Row="0" Background="#444444">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Name="HomeButtonBorder" Grid.Column="0" Background="#333333" MouseLeftButtonDown="HomeButtonBorder_MouseLeftButtonDown" Cursor="Hand" VerticalAlignment="Center" >
-                        <TextBlock Name="Home" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="16" Padding="5,0,5,5" TextAlignment="Center">
+                    <Border Name="HomeButtonBorder" Grid.Column="0" Background="#333333" MouseLeftButtonDown="HomeButtonBorder_MouseLeftButtonDown" Cursor="Hand" VerticalAlignment="Stretch" >
+                        <TextBlock Name="Home" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="16" Padding="5,0,5,5" TextAlignment="Center" VerticalAlignment="Center">
                             Home
                         </TextBlock>
                     </Border>
 
-                    <Border Name="SelectedToFolderButton" Grid.Column="2" Background="#333333" MouseLeftButtonDown="SelectedToFolderButton_MouseLeftButtonDown" Cursor="Hand" VerticalAlignment="Center" >
-                        <TextBlock Name="AddSelectedToFolder" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="16" Padding="5,0,5,5" TextAlignment="Center">
+                    <Border Name="SortButtonBorder" Grid.Column="1" Background="#333333" MouseLeftButtonDown="SortButtonBorder_MouseLeftButtonDown" Cursor="Hand" VerticalAlignment="Stretch" >
+                        <TextBlock Name="Sort" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="14" Padding="5,0,5,5" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            Sort: ABC
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Name="SelectedFolderText" Grid.Column="2" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="16" Padding="10,3,0,3" TextAlignment="Center" Text="All Unsorted Bookmarks"/>
+
+                    <Border Name="SelectedToFolderButton" Grid.Column="3" Background="#333333" MouseLeftButtonDown="SelectedToFolderButton_MouseLeftButtonDown" Cursor="Hand" VerticalAlignment="Stretch" >
+                        <TextBlock Name="AddSelectedToFolder" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="5,0,5,5" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                             Add Selected to Folder
+                        </TextBlock>
+                    </Border>
+
+                    <Border Name="DeleteSelected" Grid.Column="4" Background="#EE6969" MouseLeftButtonDown="DeleteSelected_MouseLeftButtonDown"  Cursor="Hand" VerticalAlignment="Stretch" >
+                        <TextBlock Name="DeleteSelectedText" Foreground="#000000" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="5,0,5,5" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            Delete Selected
                         </TextBlock>
                     </Border>
 
                 </Grid>
 
-                <Label Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="DarkGray"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="10,3,0,3" TextAlignment="Left" Text="Select"/>
+                    <Label Grid.Column="1" HorizontalAlignment="Stretch" Background="DarkGray"/>
+                    <TextBlock Grid.Column="2" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="10,3,0,3" TextAlignment="Left" Text="Bookmark Title"/>
+                    <Label Grid.Column="3" HorizontalAlignment="Stretch" Background="DarkGray"/>
+                    <TextBlock Grid.Column="4" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="10,3,0,3" TextAlignment="Left" Text="Bookmark Link"/>
+                    <Label Grid.Column="5" HorizontalAlignment="Stretch" Background="DarkGray"/>
+                    <TextBlock Grid.Column="6" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="10,3,0,3" TextAlignment="Left" Text="Folder"/>
+                    <Label Grid.Column="7" HorizontalAlignment="Stretch" Background="DarkGray"/>
+                    <TextBlock Grid.Column="8" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="12" Padding="10,3,10,3" TextAlignment="Left" Text="Edit"/>
+
+                </Grid>
+
+                <Label Grid.Row="2" Height="5" HorizontalAlignment="Stretch" Background="DarkGray"/>
                 
-                <ScrollViewer Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
 
                     <StackPanel Name="bookmarksStack" />
 

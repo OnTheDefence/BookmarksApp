@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:Bookmarks"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Create" Height="300" Width="600" FontSize="24" Foreground="#3fc88a" Background="#111111" WindowStyle="ToolWindow">
+        Title="Create" Height="400" Width="600" FontSize="24" Foreground="#3fc88a" Background="#111111" WindowStyle="ToolWindow">
     <Grid>
         
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -33,13 +34,22 @@
             <TextBox Name="LinkText" Grid.Column="1" Height="40" Margin="10,10,60,10" Foreground="#3fc88a" Background="#333333"/>
         </Grid>
 
-        <TextBlock Grid.Row="2" Margin="220,0,220,0" Background="#333333" Cursor="" TextAlignment="Center" Padding="5,0,5,0">
+        <TextBlock Grid.Row="2" Margin="380,0,60,0" Background="#333333" Cursor="" TextAlignment="Center" Padding="5,0,5,0">
                 <Hyperlink Name="GetTitle" NavigateUri="EditBookmark.xaml" RequestNavigate="GetTitle_RequestNavigate" Foreground="#3fc88a" TextDecorations="None" FontWeight="Bold" FontSize="16">
                     Get title from link
                 </Hyperlink>
         </TextBlock>
 
         <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Height="40" VerticalAlignment="Bottom" Margin="20,10,20,10" Text="Add to folder:" HorizontalAlignment="Right"/>
+            <ComboBox Name="ParentFolderDropdown" Grid.Column="1" Height="40" VerticalAlignment="Bottom" Margin="10,10,60,10" Foreground="#333333" SelectedIndex="0"/>
+        </Grid>
+
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

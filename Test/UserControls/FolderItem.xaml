@@ -5,33 +5,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bookmarks.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="500" FontSize="24" Margin="20,5,20,5">
+             d:DesignHeight="50" d:DesignWidth="500" FontSize="18" Margin="10,5,10,5"
+             AllowDrop="True">
     
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/> 
             </Grid.RowDefinitions>
-        <Border Background="#333333" MouseLeftButtonDown="Border_MouseLeftButtonDown" Cursor="Hand">
-            <Grid Margin="5" Grid.Row="0">
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="5*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Name="DownButton" Width="30" Height="30" Background="#333333" BorderBrush="#333333" Click="DownButton_Click" >
-                    <Image Name="DownImage" Source="/Images/down_arrow.png" Width="25" Height="25" />
-                </Button>
-                <TextBlock Name="FolderText" Grid.Column="1" Margin="5,0,5,0" Cursor="" VerticalAlignment="Stretch" TextTrimming="CharacterEllipsis" TextAlignment="Center" Padding="10,15,10,15" />
-                <Button Grid.Column="2" Name="EditButton" Width="25" Height="25" Background="#3fc88a" Click="EditButton_Click">
-                    <Image Source="/Images/edit_pen.png"></Image>
-                </Button>
-            
-            </Grid>
-        </Border>
+            <Border Background="#333333" MouseLeftButtonDown="Border_MouseLeftButtonDown" Cursor="Hand" Grid.Row="0">
+                <Grid Grid.Row="0">
 
-        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Name="DownButton" Width="30" Height="20" Background="#333333" BorderBrush="#333333" Click="DownButton_Click" HorizontalAlignment="Center">
+                        <Image Name="DownImage" Source="/Images/down_arrow.png" Width="20" Height="15" />
+                    </Button>
+                    <TextBlock Name="FolderText" Grid.Column="1" Margin="5,0,5,0" Cursor="" VerticalAlignment="Stretch" TextTrimming="CharacterEllipsis" TextAlignment="Center" Padding="10,5,10,5" />
+                    <Button Grid.Column="2" Name="EditButton" Width="25" Height="25" Background="#3fc88a" Click="EditButton_Click">
+                        <Image Source="/Images/edit_pen.png"></Image>
+                    </Button>
+
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
 
                 <StackPanel Name="FoldersStack" />
 

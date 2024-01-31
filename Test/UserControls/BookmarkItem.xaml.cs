@@ -50,22 +50,24 @@ namespace Test.UserControls
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Could not get title from link.\n" + ex.Message);
+                    MessageBox.Show("Could not get title from link.\nPlease make sure the link contains 'https://'\n" + ex.Message);
                 }
                 
             }
             LinkTitle.Text = _linkTitle;
+            int folderID = SqliteDataAccess.LoadFolderIDFromBookmarkID(_bookmarkID).Result;
+            if (folderID == 0) 
+            {
+                FolderText.Text = "---";
+            }
+            else
+            {
+                FolderText.Text = SqliteDataAccess.LoadFolderNameFromID(folderID).Result;
+            }
         }
 
         public int GetBookmarkID() {
             return _bookmarkID;
-        }
-
-
-        private void Link_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
-            e.Handled = true;
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -75,8 +77,10 @@ namespace Test.UserControls
             editBookmark.Show();
         }
 
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Border_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            SqliteDataAccess.BookmarkClick(_bookmarkID, CurrentMillis.Millis.ToString());
+            ((Test.MainWindow)Application.Current.MainWindow).LoadAllBookmarksOnPage();
             Process.Start(new ProcessStartInfo { FileName = _link, UseShellExecute = true });
         }
 
@@ -94,6 +98,18 @@ namespace Test.UserControls
             if (((Test.MainWindow)Application.Current.MainWindow).CheckedIDsLength() == 0)
             {
                 ((Test.MainWindow)Application.Current.MainWindow).DeactivateSelectedToFolderButton();
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DataObject data = new DataObject();
+                data.SetData("Int", _bookmarkID);
+
+                DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
             }
         }
     }

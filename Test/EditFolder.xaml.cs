@@ -22,9 +22,58 @@ namespace Bookmarks
     {
 
         public int _folderID;
+        int _parentFolderID;
+        List<string> otherFolders = new List<string>();
         public EditFolder()
         {
             InitializeComponent();
+        }
+
+        public void LoadFolderDropdown() {
+            otherFolders.Add("---");
+            List<string> allFolders = LoadAllOtherFolders();
+            allFolders.Sort();
+            otherFolders.AddRange(allFolders);
+            ParentFolderDropdown.ItemsSource = otherFolders;
+
+            _parentFolderID = SqliteDataAccess.LoadFolderParentFromID(_folderID).Result;
+            
+
+            if (_parentFolderID != 0)
+            {
+                ParentFolderDropdown.SelectedItem = SqliteDataAccess.LoadFolderNameFromID(_parentFolderID);
+            }
+        }
+
+        List<string> LoadAllOtherFolders() {
+            List<int> folderIDs = SqliteDataAccess.LoadFolderIDs();
+            List<string> folders = new List<string>();
+            List<int> childFolderIDs = new List<int>();
+            folderIDs.Remove(_folderID);
+
+            for (int i = 0; i < folderIDs.Count; i++){
+                int firstParent = SqliteDataAccess.LoadFolderParentFromID(folderIDs[i]).Result;
+                int currentParent = firstParent;
+                int parent = currentParent;
+
+                while (currentParent != 0) {
+                    if (parent == _folderID) {
+                        childFolderIDs.Add(folderIDs[i]);
+                    }
+                    parent = SqliteDataAccess.LoadFolderParentFromID(currentParent).Result;
+                    currentParent = parent;
+                }
+            }
+
+            for (int i = 0; i < childFolderIDs.Count; i++){
+                folderIDs.Remove(childFolderIDs[i]);
+            }
+
+            for (int i = 0; i < folderIDs.Count; i++) {
+                folders.Add(SqliteDataAccess.LoadFolderNameFromID(folderIDs[i]).Result);
+            }
+
+            return folders;
         }
 
         public void SetBookmarkID(int id)
@@ -45,7 +94,14 @@ namespace Bookmarks
             {
                 string folderName = FolderNameText.Text;
 
-                SqliteDataAccess.UpdateFolder(_folderID, folderName);
+                if (ParentFolderDropdown.SelectedItem.ToString() == "---")
+                {
+                    SqliteDataAccess.UpdateFolder(_folderID, folderName, 0);
+                }
+                else {
+                    int parentFolderID = SqliteDataAccess.LoadFolderIDFromName(ParentFolderDropdown.SelectedItem.ToString()).Result;
+                    SqliteDataAccess.UpdateFolder(_folderID, folderName, parentFolderID);
+                }
 
                 ((MainWindow)Application.Current.MainWindow).LoadAllParentFolders();
 
@@ -59,7 +115,42 @@ namespace Bookmarks
 
         private void Delete_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            //SqliteDataAccess.DeleteFolder(_folderID);
+            List<int> folderIDs = SqliteDataAccess.LoadFolderIDs();
+            List<int> childFolderIDs = new List<int>();
+            List<int> foldersToDelete = new List<int>();
+            folderIDs.Remove(_folderID);
+            foldersToDelete.Add(_folderID);
+
+            for (int i = 0; i < folderIDs.Count; i++)
+            {
+                if (SqliteDataAccess.LoadFolderParentFromID(folderIDs[i]).Result == _folderID) {
+                    childFolderIDs.Add(folderIDs[i]);
+                }
+            }
+
+
+            while (childFolderIDs.Count > 0) 
+            {
+                for (int i = 0; i < childFolderIDs.Count; i++) 
+                {
+                    for (int j = 0; j < folderIDs.Count; j++)
+                    {
+                        if (SqliteDataAccess.LoadFolderParentFromID(folderIDs[j]).Result == childFolderIDs[i])
+                        {
+                            childFolderIDs.Add(folderIDs[j]);
+                        }
+                    }
+                    foldersToDelete.Add(childFolderIDs[i]);
+                    childFolderIDs.Remove(childFolderIDs[i]);
+                }
+            }
+
+            for (int i = 0; i < foldersToDelete.Count; i++)
+            {
+                SqliteDataAccess.DeleteFolder(foldersToDelete[i]);
+            }
+
+
             ((MainWindow)Application.Current.MainWindow).LoadAllParentFolders();
             Close();
         }

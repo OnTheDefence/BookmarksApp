@@ -47,6 +47,7 @@ namespace Bookmarks.UserControls
             EditFolder editFolder = new EditFolder();
             editFolder.SetBookmarkID(_folderID);
             editFolder.Show();
+            editFolder.LoadFolderDropdown();
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -84,6 +85,35 @@ namespace Bookmarks.UserControls
         public void DisableArrow() {
             DownButton.Visibility = Visibility.Collapsed;
             DownButton.IsEnabled = false;
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            base.OnDrop(e);
+
+            if (e.Data.GetDataPresent("Int")) {
+                List<int> IDs = new List<int>();
+                if (((Test.MainWindow)Application.Current.MainWindow).CheckedIDsLength() > 0)
+                {
+                    IDs.AddRange(((Test.MainWindow)Application.Current.MainWindow).GetCheckedIDs());
+                    string s = "";
+                    for (int i = 0; i < IDs.Count; i++)
+                    {
+                        SqliteDataAccess.AddBookmarkToFolder(IDs[i], _folderID);
+                        s += SqliteDataAccess.LoadBookmarkTitleFromID(IDs[i]).Result + "\n";
+                    }
+
+                    MessageBox.Show("Added bookmarks with titles:\n" + s + "To folder: " + SqliteDataAccess.LoadFolderNameFromID(_folderID).Result);
+
+                }
+                else {
+                    IDs.Add((int)e.Data.GetData("Int"));
+                    SqliteDataAccess.AddBookmarkToFolder(IDs[0], _folderID);
+                    MessageBox.Show("Added bookmarks with title:\n" + SqliteDataAccess.LoadBookmarkTitleFromID(IDs[0]).Result + "\nTo folder: " + SqliteDataAccess.LoadFolderNameFromID(_folderID).Result);
+                }
+
+                ((Test.MainWindow)Application.Current.MainWindow).LoadAllBookmarksOnPage();
+            }
         }
     }
 }

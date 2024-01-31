@@ -20,9 +20,34 @@ namespace Bookmarks
     /// </summary>
     public partial class CreateFolder : Window
     {
+        List<string> otherFolders = new List<string>();
+
         public CreateFolder()
         {
             InitializeComponent();
+        }
+
+        public void LoadFolderDropdown()
+        {
+            otherFolders.Add("---");
+            List<string> allFolders = LoadAllOtherFolders();
+            allFolders.Sort();
+            otherFolders.AddRange(allFolders);
+            ParentFolderDropdown.ItemsSource = otherFolders;
+        }
+
+        List<string> LoadAllOtherFolders()
+        {
+            List<int> folderIDs = SqliteDataAccess.LoadFolderIDs();
+            List<string> folders = new List<string>();
+            List<int> childFolderIDs = new List<int>();
+
+            for (int i = 0; i < folderIDs.Count; i++)
+            {
+                folders.Add(SqliteDataAccess.LoadFolderNameFromID(folderIDs[i]).Result);
+            }
+
+            return folders;
         }
 
         private void Cancel_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -35,8 +60,13 @@ namespace Bookmarks
             if (FolderTitleText.Text.Length > 0)
             {
                 string name = FolderTitleText.Text;
+                int parent = 0;
 
-                SqliteDataAccess.SaveFolder(name);
+                if (ParentFolderDropdown.SelectedItem.ToString() != "---") {
+                    parent = SqliteDataAccess.LoadFolderIDFromName(ParentFolderDropdown.SelectedItem.ToString()).Result;
+                }
+
+                SqliteDataAccess.SaveFolder(name, parent);
 
                 ((MainWindow)Application.Current.MainWindow).LoadAllParentFolders();
 
